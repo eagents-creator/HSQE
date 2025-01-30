@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Add Person to Team{% endblock %}
+{% block content %}
+<h2>Add Person to Team</h2>
+
+<div class="mb-4">
+    <form method="POST" action="/add_person" style="max-width: 600px;">
+        <div class="mb-3">
+            <label for="person_name" class="form-label">Person Name:</label>
+            <input type="text" name="person_name" id="person_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="team_id" class="form-label">Assign to Team:</label>
+            <select name="team_id" id="team_id" class="form-select" required>
+                {% for team in teams %}
+                <option value="{{ team[0] }}">{{ team[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Person</button>
+    </form>
+</div>
+
+<h3>Existing Team Members</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Team</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person[0] }}</td>
+            <td>{{ person[1] }}</td>
+            <td>{{ person[2] }}</td>
+            <td>{{ person[3] }}</td>
+            <td>
+                <form method="POST" action="/delete_person/{{ person[0] }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

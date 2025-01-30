@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}Add Incident{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Add New Incident</h1>
+    <form method="POST" action="{{ url_for('add_incident') }}" class="needs-validation" novalidate>
+        <div class="form-row">
+            <!-- Date -->
+            <div class="form-group col-md-6">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+                <div class="invalid-feedback">Please provide a valid date.</div>
+            </div>
+            
+            <!-- Incident Type -->
+            <div class="form-group col-md-6">
+                <label for="type">Incident Type</label>
+                <select class="form-control" id="type" name="type" required>
+                    <option value="" disabled selected>Select Type</option>
+                    <option value="Injury">Injury</option>
+                    <option value="Near Miss">Near Miss</option>
+                    <option value="Asset Damage">Asset Damage</option>
+                    <option value="Non-Compliance">Non-Compliance</option>
+                    <option value="Contract Breach">Contract Breach</option>
+                    <option value="Job-Related Illness">Job-Related Illness</option>
+                </select>
+                <div class="invalid-feedback">Please select an incident type.</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Department -->
+            <div class="form-group col-md-6">
+                <label for="department">Department</label>
+                <input type="text" class="form-control" id="department" name="department" required>
+                <div class="invalid-feedback">Please provide a department.</div>
+            </div>
+            
+            <!-- Injured Job Title -->
+            <div class="form-group col-md-6">
+                <label for="injured_job_title">Injured Job Title</label>
+                <input type="text" class="form-control" id="injured_job_title" name="injured_job_title">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Injured Age -->
+            <div class="form-group col-md-4">
+                <label for="injured_age">Injured Age</label>
+                <input type="number" class="form-control" id="injured_age" name="injured_age" min="0">
+            </div>
+            
+            <!-- Injured Gender -->
+            <div class="form-group col-md-4">
+                <label for="injured_gender">Injured Gender</label>
+                <select class="form-control" id="injured_gender" name="injured_gender">
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Body Part Affected -->
+            <div class="form-group col-md-4">
+                <label for="body_part_affected">Body Part Affected</label>
+                <input type="text" class="form-control" id="body_part_affected" name="body_part_affected">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Time of Day -->
+            <div class="form-group col-md-4">
+                <label for="time_of_day">Time of Day</label>
+                <input type="time" class="form-control" id="time_of_day" name="time_of_day">
+            </div>
+            
+            <!-- Time Into Shift -->
+            <div class="form-group col-md-4">
+                <label for="time_into_shift">Time Into Shift</label>
+                <input type="text" class="form-control" id="time_into_shift" name="time_into_shift">
+            </div>
+            
+            <!-- Machine/Equipment -->
+            <div class="form-group col-md-4">
+                <label for="machine_equipment">Machine/Equipment</label>
+                <input type="text" class="form-control" id="machine_equipment" name="machine_equipment">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Operation -->
+            <div class="form-group col-md-6">
+                <label for="operation">Operation</label>
+                <input type="text" class="form-control" id="operation" name="operation">
+            </div>
+            
+            <!-- Causation -->
+            <div class="form-group col-md-6">
+                <label for="causation">Causation</label>
+                <input type="text" class="form-control" id="causation" name="causation">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Location -->
+            <div class="form-group col-md-6">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+                <div class="invalid-feedback">Please provide a location.</div>
+            </div>
+            
+            <!-- Financial Impact -->
+            <div class="form-group col-md-6">
+                <label for="financial_impact">Financial Impact (€)</label>
+                <input type="number" class="form-control" id="financial_impact" name="financial_impact" step="0.01">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <!-- Reportable -->
+            <div class="form-group col-md-4">
+                <label for="reportable">Reportable</label>
+                <select class="form-control" id="reportable" name="reportable">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            
+            <!-- Description -->
+            <div class="form-group col-md-8">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Incident</button>
+    </form>
+</div>
+{% endblock %}

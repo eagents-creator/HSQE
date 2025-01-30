@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}View Incident{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Incident Details</h1>
+
+    <div class="card">
+        <div class="card-header bg-warning text-dark">
+            <h3>Incident Information</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date:</th>
+                    <td>{{ incident.date }}</td>
+                </tr>
+                <tr>
+                    <th>Type:</th>
+                    <td>{{ incident.type }}</td>
+                </tr>
+                <tr>
+                    <th>Department:</th>
+                    <td>{{ incident.department }}</td>
+                </tr>
+                <tr>
+                    <th>Location:</th>
+                    <td>{{ incident.location }}</td>
+                </tr>
+                <tr>
+                    <th>Financial Impact (€):</th>
+                    <td>{{ incident.financial_impact }}</td>
+                </tr>
+                <tr>
+                    <th>Injured Job Title:</th>
+                    <td>{{ incident.injured_job_title }}</td>
+                </tr>
+                <tr>
+                    <th>Injured Age:</th>
+                    <td>{{ incident.injured_age }}</td>
+                </tr>
+                <tr>
+                    <th>Injured Gender:</th>
+                    <td>{{ incident.injured_gender }}</td>
+                </tr>
+                <tr>
+                    <th>Body Part Affected:</th>
+                    <td>{{ incident.body_part_affected }}</td>
+                </tr>
+                <tr>
+                    <th>Time of Day:</th>
+                    <td>{{ incident.time_of_day }}</td>
+                </tr>
+                <tr>
+                    <th>Machine Equipment:</th>
+                    <td>{{ incident.machine_equipment }}</td>
+                </tr>
+                <tr>
+                    <th>Operation:</th>
+                    <td>{{ incident.operation }}</td>
+                </tr>
+                <tr>
+                    <th>Causation:</th>
+                    <td>{{ incident.causation }}</td>
+                </tr>
+                <tr>
+                    <th>Description:</th>
+                    <td>{{ incident.description }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('incident_dashboard') }}" class="btn btn-secondary">Back to Incidents</a>
+        <a href="{{ url_for('delete_incident', id=incident.id) }}" class="btn btn-danger"
+           onclick="return confirm('Are you sure you want to delete this incident?');">Delete Incident</a>
+    </div>
+</div>
+{% endblock %}

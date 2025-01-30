@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Add 5S{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Add 5S Record</h1>
+
+    {% if success %}
+        <div class="alert alert-success">5S record saved successfully!</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="mt-4">
+        <!-- Category Selection -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category:</label>
+            <select id="category" name="category" class="form-control" required onchange="updateFields()">
+                <option value="" selected disabled>-- Choose Category --</option>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Dynamic Fields (based on Category Selection) -->
+        <div id="category-fields">
+            <p>Please select a category to see the fields.</p>
+        </div>
+
+        <!-- Responsible Team -->
+        <div class="mb-3">
+            <label for="responsible_team" class="form-label">Responsible Team:</label>
+            <select id="responsible_team" name="responsible_team" class="form-control" required>
+                <option value="" selected disabled>-- Choose Team --</option>
+                {% for team in teams %}
+                    <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Date -->
+        <div class="mb-3">
+            <label for="install_date" class="form-label">Date:</label>
+            <input type="date" id="install_date" name="install_date" class="form-control" required>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Status:</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="Completed">Completed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Not Started">Not Started</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        const subcategories = {
+            "Sort": ["unnecessary_items_removed", "red_tagged_items", "repaired_items_kept", "housekeeping_done", "facility_inspection"],
+            "Straighten": ["everything_in_place", "labeling_done", "tool_outlines", "aisle_markings", "pallet_zones"],
+            "Shine": ["cleaning_done", "root_cause_analysis", "equipment_maintenance", "zone_division"],
+            "Standardize": ["visual_controls", "set_standards", "inspection_methods"],
+            "Sustain": ["commitment_to_steps", "evaluations_done"]
+        };
+
+        function updateFields() {
+            const selectedCategory = document.getElementById('category').value;
+            const fieldsContainer = document.getElementById('category-fields');
+            fieldsContainer.innerHTML = "";  // Clear previous fields
+
+            if (selectedCategory && subcategories[selectedCategory]) {
+                const fields = subcategories[selectedCategory];
+                fields.forEach(function(field) {
+                    const fieldDiv = document.createElement('div');
+                    fieldDiv.classList.add('mb-3');
+                    fieldDiv.innerHTML = `
+                        <label for="${field}" class="form-label">${field.replace(/_/g, ' ').toUpperCase()}:</label>
+                        <input type="number" id="${field}" name="${field}" class="form-control" min="1" max="5" required>
+                    `;
+                    fieldsContainer.appendChild(fieldDiv);
+                });
+            }
+        }
+
+        // Ensure fields are updated when the page loads
+        window.onload = function() {
+            updateFields();
+        };
+    </script>
+
+</div>
+{% endblock %}

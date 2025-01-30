@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Add HSEQ{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary">Add HSEQ Record</h1>
+
+    {% if success %}
+        <div class="alert alert-success text-center">HSEQ record saved successfully!</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger text-center">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="mt-4">
+        <!-- Category Selection -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category:</label>
+            <select id="category" name="category" class="form-control" required onchange="updateSubcategories()">
+                <option value="" selected disabled>-- Select Category --</option>
+                {% for category in categories.keys() %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Subcategory Inputs (Dynamically Updated) -->
+        <div id="subcategory-container" class="row">
+            <p class="text-muted text-center">Please select a category to see subcategories.</p>
+        </div>
+
+        <!-- Responsible Team -->
+        <div class="mb-3">
+            <label for="responsible_team" class="form-label">Responsible Team:</label>
+            <select id="responsible_team" name="responsible_team" class="form-control" required>
+                <option value="" selected disabled>-- Select Team --</option>
+                {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Status:</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="" selected disabled>-- Select Status --</option>
+                <option value="Completed">Completed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Pending">Pending</option>
+            </select>
+        </div>
+
+        <!-- Date -->
+        <div class="mb-3">
+            <label for="install_date" class="form-label">Date:</label>
+            <input type="date" id="install_date" name="install_date" class="form-control" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-5">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const categoryData = {{ categories|tojson }};
+
+    function updateSubcategories() {
+        const categorySelect = document.getElementById("category");
+        const subcategoryContainer = document.getElementById("subcategory-container");
+        subcategoryContainer.innerHTML = "";
+
+        const selectedCategory = categorySelect.value;
+        if (!selectedCategory) {
+            subcategoryContainer.innerHTML = "<p class='text-muted text-center'>Please select a category to see subcategories.</p>";
+            return;
+        }
+
+        if (categoryData[selectedCategory].length > 0) {
+            categoryData[selectedCategory].forEach(subcat => {
+                let colDiv = document.createElement("div");
+                colDiv.classList.add("col-md-6", "mb-3");
+                colDiv.innerHTML = `
+                    <label for="${subcat}" class="form-label">${subcat} (1-5):</label>
+                    <input type="number" id="${subcat}" name="${subcat}" class="form-control" min="1" max="5" required>
+                `;
+                subcategoryContainer.appendChild(colDiv);
+            });
+        } else {
+            subcategoryContainer.innerHTML = "<p class='text-muted text-center'>Select a category to see subcategories.</p>";
+        }
+    }
+</script>
+
+{% endblock %}

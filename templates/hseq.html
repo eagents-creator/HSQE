@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}HSEQ Entries{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-primary text-center mb-4">HSEQ Entries</h2>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ url_for('add_hseq') }}" class="btn btn-info">Add New Entry</a>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Organisation</th>
+                    <th>Category</th>
+                    <th>Responsible Team</th>
+                    <th>Value</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in hseq_reports %}
+                <tr>
+                    <td>{{ entry[0] }}</td>  <!-- ID -->
+                    <td>{{ entry[1] }}</td>  <!-- Date -->
+                    <td>{{ entry[2] }}</td>  <!-- Status -->
+                    <td>{{ entry[3] }}</td>  <!-- Organisation -->
+                    <td>{{ entry[4] }}</td>  <!-- Category -->
+                    <td>{{ entry[5] }}</td>  <!-- Responsible Team -->
+                    <td>{{ entry[6] }}</td>  <!-- Value -->
+                    <td>
+                        <a href="{{ url_for('edit_hseq', hseq_id=entry[0]) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ url_for('delete_hseq', hseq_id=entry[0]) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to delete this entry?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

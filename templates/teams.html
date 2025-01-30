@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Manage Teams{% endblock %}
+{% block content %}
+<h2>Manage Teams</h2>
+
+<!-- Form to Add a New Team -->
+<div class="mb-4">
+    <form method="POST" action="/teams" style="max-width: 400px;">
+        <div class="mb-3">
+            <label for="team_name" class="form-label">New Team Name:</label>
+            <input type="text" name="team_name" id="team_name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Team</button>
+    </form>
+</div>
+
+<!-- Form to Add a New Person -->
+<div class="mb-4">
+    <form method="POST" action="/teams" style="max-width: 400px;">
+        <div class="mb-3">
+            <label for="person_name" class="form-label">Person Name:</label>
+            <input type="text" name="person_name" id="person_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="team_id" class="form-label">Assign to Team:</label>
+            <select name="team_id" id="team_id" class="form-select" required>
+                {% for team in teams %}
+                <option value="{{ team[0] }}">{{ team[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Person</button>
+    </form>
+</div>
+
+<!-- Display Existing Teams -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Team Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for team in teams %}
+        <tr>
+            <td>{{ team[0] }}</td>
+            <td>{{ team[1] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Display Existing Persons -->
+<h3>Team Members</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Person Name</th>
+            <th>Email</th>
+            <th>Team</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person[0] }}</td>
+            <td>{{ person[1] }}</td>
+            <td>{{ person[2] }}</td>
+            <td>{{ person[3] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

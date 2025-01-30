@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Dashboard Overview</h1>
+
+    <!-- HSEQ and 5S Points Bar Charts -->
+    <div class="row mb-4">
+        <!-- HSEQ Points Bar Chart -->
+        <div class="col-md-6">
+            <h4>HSEQ Points</h4>
+            <canvas id="hseqPointsChart"></canvas>
+        </div>
+
+        <!-- 5S Points Bar Chart -->
+        <div class="col-md-6">
+            <h4>5S Points</h4>
+            <canvas id="fiveSPointsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- HSEQ Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h3>HSEQ Latest Reports</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Organisation</th>
+                        <th>Category</th>
+                        <th>Responsible Team</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in hseq_reports %}
+                    <tr>
+                        <td>{{ report[0] }}</td>  <!-- Date -->
+                        <td>{{ report[1] }}</td>  <!-- Status -->
+                        <td>{{ report[2] }}</td>  <!-- Organisation -->
+                        <td>{{ report[3] }}</td>  <!-- Category -->
+                        <td>{{ report[4] }}</td>  <!-- Responsible Team -->
+                        <td>{{ report[5] }}</td>  <!-- Value -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 5S Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h3>5S Latest Reports</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th>Responsible Team</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in five_s_reports %}
+                    <tr>
+                        <td>{{ report[0] }}</td>  <!-- Date -->
+                        <td>{{ report[1] }}</td>  <!-- Status -->
+                        <td>{{ report[2] }}</td>  <!-- Category -->
+                        <td>{{ report[3] }}</td>  <!-- Responsible Team -->
+                        <td>{{ report[4] }}</td>  <!-- Value -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Separate Charts for Categories -->
+    <div class="row">
+        <!-- HSEQ Category Radar -->
+        <div class="col-md-6">
+            <h4>HSEQ Category Averages</h4>
+            <canvas id="hseqCategoryChart"></canvas>
+        </div>
+
+        <!-- 5S Category Radar -->
+        <div class="col-md-6">
+            <h4>5S Category Averages</h4>
+            <canvas id="fiveSCategoryChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Separate Radar Charts for Subcategories -->
+    <div class="row mt-4">
+        <!-- HSEQ Subcategory Radar -->
+        <div class="col-md-6">
+            <h4>HSEQ Subcategory Averages</h4>
+            <canvas id="hseqSubcategoryChart"></canvas>
+        </div>
+
+        <!-- 5S Subcategory Radar -->
+        <div class="col-md-6">
+            <h4>5S Subcategory Averages</h4>
+            <canvas id="fiveSSubcategoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // HSEQ Points Bar Chart
+    var ctx1 = document.getElementById('hseqPointsChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Health', 'Safety', 'Quality', 'Environment'],
+            datasets: [{
+                label: 'HSEQ Points',
+                data: {{ hseq_category_values|tojson }},
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // 5S Points Bar Chart
+    var ctx2 = document.getElementById('fiveSPointsChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['Sort', 'Straighten', 'Shine', 'Standardize', 'Sustain'],
+            datasets: [{
+                label: '5S Points',
+                data: {{ five_s_category_values|tojson }},
+                backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                borderColor: 'rgba(40, 167, 69, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // HSEQ Category Radar Chart (correcting data mapping)
+    var ctx3 = document.getElementById('hseqCategoryChart').getContext('2d');
+    new Chart(ctx3, {
+        type: 'radar',
+        data: {
+            labels: ['Health', 'Safety', 'Quality', 'Environment'],
+            datasets: [{
+                label: 'HSEQ Categories',
+                data: {{ hseq_category_values|tojson }},
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // 5S Category Radar Chart (correcting data mapping)
+    var ctx4 = document.getElementById('fiveSCategoryChart').getContext('2d');
+    new Chart(ctx4, {
+        type: 'radar',
+        data: {
+            labels: ['Sort', 'Straighten', 'Shine', 'Standardize', 'Sustain'],
+            datasets: [{
+                label: '5S Categories',
+                data: {{ five_s_category_values|tojson }},
+                backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                borderColor: 'rgba(40, 167, 69, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // HSEQ Subcategory Radar Chart (correcting data mapping)
+    var ctx5 = document.getElementById('hseqSubcategoryChart').getContext('2d');
+    new Chart(ctx5, {
+        type: 'radar',
+        data: {
+            labels: {{ hseq_subcategory_labels|tojson }},
+            datasets: [{
+                label: 'HSEQ Subcategories',
+                data: {{ hseq_subcategory_values|tojson }},
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // 5S Subcategory Radar Chart (correcting data mapping)
+    var ctx6 = document.getElementById('fiveSSubcategoryChart').getContext('2d');
+    new Chart(ctx6, {
+        type: 'radar',
+        data: {
+            labels: {{ five_s_subcategory_labels|tojson }},
+            datasets: [{
+                label: '5S Subcategories',
+                data: {{ five_s_subcategory_values|tojson }},
+                backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                borderColor: 'rgba(40, 167, 69, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+{% endblock %}
